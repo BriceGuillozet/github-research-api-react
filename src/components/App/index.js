@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Message } from 'semantic-ui-react';
+import { Message, Button } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import axios from 'axios';
 
@@ -14,21 +14,24 @@ const App = () => {
   const [inputText, setInputText] = useState('react');
   const [loading, setLoading] = useState(false);
   const [repos, setRepos] = useState([]);
+  const [activePage, setActivePage] = useState(1);
 
   const handleInputChange = (enteredText) => {
     setInputText(enteredText);
   };
 
   const fetchDatas = async () => {
+    if (!inputText) return;
     setLoading(true);
+    const filters = `&sort=stars&order=desc&page=${activePage}&per_page=9`;
 
     try {
       const results = await axios({
         method: 'get',
-        url: `${BASE_URL}${inputText}`,
+        url: `${BASE_URL}${inputText}${filters}`,
       });
 
-      setRepos(results.data.items);
+      setRepos([...repos, ...results.data.items]);
       const newMessage = `La recherche a générée ${results.data.total_count} résultats`;
       setMessage(newMessage);
     }
@@ -42,7 +45,11 @@ const App = () => {
     fetchDatas();
   };
 
-  useEffect(fetchDatas, []);
+  const handleShowMore = () => {
+    setActivePage(activePage + 1);
+  };
+
+  useEffect(fetchDatas, [activePage]);
 
   return (
     <div className="app">
@@ -54,6 +61,16 @@ const App = () => {
       />
       <Message content={message} />
       <Repos list={repos} />
+      <Button
+        fluid
+        loading={loading}
+        color="blue"
+        icon="plus"
+        size="huge"
+        content="Afficher plus de repos"
+        onClick={handleShowMore}
+        disabled={loading}
+      />
     </div>
   );
 };

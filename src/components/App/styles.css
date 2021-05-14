@@ -3,8 +3,9 @@ body {
 }
 
 .app {
-  width: 950px;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
   background-color: #ECF0F1;
   padding: 10px;
-}
+} 

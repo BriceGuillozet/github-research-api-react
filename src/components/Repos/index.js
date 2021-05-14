@@ -4,19 +4,23 @@ import { Card } from 'semantic-ui-react';
 import './style.scss';
 
 const Repos = ({ list }) => (
-  <Card.Group itemsPerRow={3}>
+  <div className="repos__list">
     {
     list.map((repoObj) => (
-      <Card
-        key={repoObj.id}
-        image={repoObj.owner.avatar_url}
-        header={repoObj.name}
-        meta={repoObj.owner.login}
-        description={repoObj.description ? repoObj.description : ''}
-      />
+      <div className="repos__item">
+        <Card
+          fluid
+          style={{height: '100%'}}
+          key={repoObj.id}
+          image={repoObj.owner.avatar_url}
+          header={repoObj.name}
+          meta={repoObj.owner.login}
+          description={repoObj.description ? repoObj.description : ''}
+        />
+      </div>
     ))
     }
-  </Card.Group>
+  </div>
 );
 
 Repos.propTypes = {

@@ -1,0 +1,12 @@
+.repos__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.repos__item {
+  flex: 1;
+  min-width: 250px;
+  margin: 10px;
+}
