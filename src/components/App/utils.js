@@ -1,9 +1,8 @@
 import axios from 'axios';
-import Const from './const';
 
-export const request = (inputText, filters) => {
-  axios({
-    method: 'get',
-    url: `${Const.BASE_URL}${inputText}${filters}`,
-  });
-};
+const axiosReq = (url) => axios({
+  method: 'get',
+  url,
+});
+
+export default axiosReq;

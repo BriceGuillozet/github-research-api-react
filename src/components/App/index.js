@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Message, Button } from 'semantic-ui-react';
 import { Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import axios from 'axios';
 
 import Header from '../Header';
 import Repos from '../Repos';
 import SingleRepo from '../SingleRepo';
 import './styles.css';
 
-import Const from './const';
+import { BASE_URL, REPO_URL } from './const';
+import axiosReq from './utils';
 
 const App = () => {
   const [message, setMessage] = useState('Pas encore de résultats');
@@ -24,11 +24,9 @@ const App = () => {
     if (!inputText) return;
     setLoading(true);
     const filters = `&sort=stars&order=desc&page=${activePage}&per_page=9`;
+    const url = `${BASE_URL}${inputText}${filters}`;
     try {
-      const results = await axios({
-        method: 'get',
-        url: `${Const.BASE_URL}${inputText}${filters}`,
-      });
+      const results = await axiosReq(url);
       if (newPage) {
         setRepos([...results.data.items]);
       }
@@ -45,13 +43,10 @@ const App = () => {
   };
 
   const fetchOneRepo = async (orga, repo) => {
-    const url = `${Const.REPO_URL}/${orga}/${repo}`;
+    const url = `${REPO_URL}/${orga}/${repo}`;
     setLoading(true);
     try {
-      const response = await axios({
-        method: 'get',
-        url,
-      });
+      const response = await axiosReq(url);
       setFullRepo(response.data);
     }
     catch (e) {
@@ -66,8 +61,8 @@ const App = () => {
 
   const handleFormSubmit = () => {
     setRepos([]);
-    setActivePage(1);
     setNewPage(true);
+    setActivePage(1);
     fetchDatas(activePage, inputText);
   };
 
@@ -76,7 +71,7 @@ const App = () => {
     setActivePage(activePage + 1);
   };
 
-  useEffect(fetchDatas, [newPage, activePage]);
+  useEffect(fetchDatas, [activePage]);
 
   return (
     <div className="app">
