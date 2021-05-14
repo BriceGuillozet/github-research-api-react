@@ -2,7 +2,7 @@
 
 Projet React : une page de recherche de Repos GitHub qui utilise l'API fourni par Github !
 
-![](ooo.gif)
+![](github-api-search.gif)
 
 
 ## Coded with
@@ -11,7 +11,6 @@ Projet React : une page de recherche de Repos GitHub qui utilise l'API fourni pa
 - React-Router
 - Semantic UI
 - Axios
-- SCSS
 
 # Launch
 

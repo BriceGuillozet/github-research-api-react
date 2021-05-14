@@ -8,10 +8,9 @@ const Repos = ({ list }) => (
   <div className="repos__list">
     {
     list.map((repoObj) => (
-      <div className="repos__item">
+      <div key={repoObj.id} className="repos__item">
         <Link to={`/repos/${repoObj.full_name}`}>
           <Card
-            href="#"
             fluid
             style={{ height: '100%' }}
             key={repoObj.id}

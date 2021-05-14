@@ -22,6 +22,7 @@ const App = () => {
 
   const fetchDatas = async () => {
     if (!inputText) return;
+    setRepos([]);
     setActivePage(1);
     setLoading(true);
     const filters = `&sort=stars&order=desc&page=${activePage}&per_page=9`;
