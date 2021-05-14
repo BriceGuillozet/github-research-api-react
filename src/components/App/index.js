@@ -18,9 +18,12 @@ const App = () => {
   const [repos, setRepos] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [fullRepo, setFullRepo] = useState({});
-  const [newPage, setNewPage] = useState(false);
+  const [newPage, setNewPage] = useState(true);
 
   const fetchDatas = async () => {
+    if (newPage) {
+      setActivePage(1);
+    }
     if (!inputText) return;
     setLoading(true);
     const filters = `&sort=stars&order=desc&page=${activePage}&per_page=9`;
@@ -60,10 +63,8 @@ const App = () => {
   };
 
   const handleFormSubmit = () => {
-    setRepos([]);
     setNewPage(true);
-    setActivePage(1);
-    fetchDatas(activePage, inputText);
+    fetchDatas();
   };
 
   const handleShowMore = () => {
@@ -71,7 +72,7 @@ const App = () => {
     setActivePage(activePage + 1);
   };
 
-  useEffect(fetchDatas, [activePage]);
+  useEffect(fetchDatas, [activePage, newPage]);
 
   return (
     <div className="app">
