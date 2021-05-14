@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import logo from 'src/assets/img/logo-github.png';
 
-const Header = ({ inputValue, onInputChange, onFormSubmit, loading }) => (
+const Header = ({
+  inputValue, onInputChange, onFormSubmit, loading,
+}) => (
   <header className="header">
     <img className="header__logo" src={logo} alt="logo Github" />
     <Segment>

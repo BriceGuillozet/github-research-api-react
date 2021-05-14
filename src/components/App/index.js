@@ -9,8 +9,7 @@ import Repos from '../Repos';
 import SingleRepo from '../SingleRepo';
 import './styles.css';
 
-const BASE_URL = 'https://api.github.com/search/repositories?q=';
-const REPO_URL = 'https://api.github.com/repos';
+import Const from './const';
 
 const App = () => {
   const [message, setMessage] = useState('Pas encore de résultats');
@@ -19,38 +18,23 @@ const App = () => {
   const [repos, setRepos] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [fullRepo, setFullRepo] = useState({});
+  const [newPage, setNewPage] = useState(false);
 
   const fetchDatas = async () => {
     if (!inputText) return;
-    setRepos([]);
-    setActivePage(1);
     setLoading(true);
     const filters = `&sort=stars&order=desc&page=${activePage}&per_page=9`;
     try {
       const results = await axios({
         method: 'get',
-        url: `${BASE_URL}${inputText}${filters}`,
+        url: `${Const.BASE_URL}${inputText}${filters}`,
       });
-      setRepos([...results.data.items]);
-      const newMessage = `La recherche a générée ${results.data.total_count} résultats`;
-      setMessage(newMessage);
-    }
-    catch (e) {
-      console.trace(e);
-    }
-    setLoading(false);
-  };
-
-  const fetchMoreDatas = async () => {
-    if (!inputText) return;
-    setLoading(true);
-    const filters = `&sort=stars&order=desc&page=${activePage}&per_page=9`;
-    try {
-      const results = await axios({
-        method: 'get',
-        url: `${BASE_URL}${inputText}${filters}`,
-      });
-      setRepos([...repos, ...results.data.items]);
+      if (newPage) {
+        setRepos([...results.data.items]);
+      }
+      else {
+        setRepos([...repos, ...results.data.items]);
+      }
       const newMessage = `La recherche a générée ${results.data.total_count} résultats`;
       setMessage(newMessage);
     }
@@ -61,7 +45,7 @@ const App = () => {
   };
 
   const fetchOneRepo = async (orga, repo) => {
-    const url = `${REPO_URL}/${orga}/${repo}`;
+    const url = `${Const.REPO_URL}/${orga}/${repo}`;
     setLoading(true);
     try {
       const response = await axios({
@@ -81,16 +65,18 @@ const App = () => {
   };
 
   const handleFormSubmit = () => {
-    fetchDatas();
+    setRepos([]);
+    setActivePage(1);
+    setNewPage(true);
+    fetchDatas(activePage, inputText);
   };
 
   const handleShowMore = () => {
+    setNewPage(false);
     setActivePage(activePage + 1);
   };
 
-  useEffect(fetchDatas, []);
-
-  useEffect(fetchMoreDatas, [activePage]);
+  useEffect(fetchDatas, [newPage, activePage]);
 
   return (
     <div className="app">
