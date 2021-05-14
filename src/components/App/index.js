@@ -19,23 +19,27 @@ const App = () => {
     setInputText(enteredText);
   };
 
-  const handleFormSubmit = () => {
+  const fetchDatas = async () => {
     setLoading(true);
-    axios({
-      method: 'get',
-      url: `${BASE_URL}${inputText}`,
-    })
-      .then((res) => {
-        setRepos(res.data.items);
-        const newMessage = `La recherche a générée ${res.data.total_count} résultats`;
-        setMessage(newMessage);
-      })
-      .catch((err) => {
-        console.trace(err);
-      })
-      .finally(() => {
-        setLoading(false);
+
+    try {
+      const results = await axios({
+        method: 'get',
+        url: `${BASE_URL}${inputText}`,
       });
+
+      setRepos(results.data.items);
+      const newMessage = `La recherche a générée ${results.data.total_count} résultats`;
+      setMessage(newMessage);
+    }
+    catch (e) {
+      console.trace(e);
+    }
+    setLoading(false);
+  };
+
+  const handleFormSubmit = () => {
+    fetchDatas();
   };
 
   return (
