@@ -9,6 +9,7 @@ Projet React : une page de recherche de Repos GitHub qui utilise l'API fourni pa
 
 - React
 - Semantic UI
+- Axios
 - SCSS
 
 # Launch
