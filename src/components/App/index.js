@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Message } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import axios from 'axios';
@@ -11,7 +11,7 @@ const BASE_URL = 'https://api.github.com/search/repositories?q=';
 
 const App = () => {
   const [message, setMessage] = useState('Pas encore de résultats');
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState('react');
   const [loading, setLoading] = useState(false);
   const [repos, setRepos] = useState([]);
 
@@ -41,6 +41,8 @@ const App = () => {
   const handleFormSubmit = () => {
     fetchDatas();
   };
+
+  useEffect(fetchDatas, []);
 
   return (
     <div className="app">
