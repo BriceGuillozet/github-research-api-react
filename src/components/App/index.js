@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Message, Button } from 'semantic-ui-react';
+import { Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import axios from 'axios';
 
+import data from '../../assets/data/repos';
+
 import Header from '../Header';
 import Repos from '../Repos';
+import SingleRepo from '../SingleRepo';
 import './styles.css';
 
 const BASE_URL = 'https://api.github.com/search/repositories?q=';
@@ -59,18 +63,23 @@ const App = () => {
         onInputChange={handleInputChange}
         onFormSubmit={handleFormSubmit}
       />
-      <Message content={message} />
-      <Repos list={repos} />
-      <Button
-        fluid
-        loading={loading}
-        color="blue"
-        icon="plus"
-        size="huge"
-        content="Afficher plus de repos"
-        onClick={handleShowMore}
-        disabled={loading}
-      />
+      <Route exact path="/">
+        <Message content={message} />
+        <Repos list={repos} />
+        <Button
+          fluid
+          loading={loading}
+          color="blue"
+          icon="plus"
+          size="huge"
+          content="Afficher plus de repos"
+          onClick={handleShowMore}
+          disabled={loading}
+        />
+      </Route>
+      <Route path="/repos/:orga/:repo">
+        <SingleRepo activeRepo={data.items[0]} />
+      </Route>
     </div>
   );
 };
